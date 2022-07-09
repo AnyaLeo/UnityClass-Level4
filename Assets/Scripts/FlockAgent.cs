@@ -15,4 +15,11 @@ public class FlockAgent : MonoBehaviour
     {
         
     }
+
+
+
+    public void MoveAgent()
+    {
+        transform.position += transform.up * Time.deltaTime;
+    }
 }

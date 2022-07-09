@@ -7,7 +7,7 @@ public class Flock : MonoBehaviour
     public GameObject flockAgentPrefab;
     public int flockAgentCount = 10;
     public float spawnRadius = 5f;
-    public List<GameObject> flockAgents;
+    public List<FlockAgent> flockAgents;
 
     // Start is called before the first frame update
     void Start()
@@ -18,7 +18,10 @@ public class Flock : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        for (int i = 0; i < flockAgents.Count; i++)
+        {
+            flockAgents[i].MoveAgent();
+        }
     }
 
     void Initialize()
@@ -34,7 +37,8 @@ public class Flock : MonoBehaviour
 
             newAgent.transform.parent = transform;
 
-            flockAgents.Add(newAgent);
+            FlockAgent newFlockAgent = newAgent.GetComponent<FlockAgent>();
+            flockAgents.Add(newFlockAgent);
         }
     }
 }
