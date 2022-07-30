@@ -7,6 +7,9 @@ public class Flock : MonoBehaviour
     public GameObject flockAgentPrefab;
     public int flockAgentCount = 10;
     public float spawnRadius = 5f;
+    public float avoidanceRadius = 1f;
+    public float neighborRadius = 2f;
+
     public List<FlockAgent> flockAgents;
 
     // Start is called before the first frame update
@@ -23,8 +26,9 @@ public class Flock : MonoBehaviour
             List<Transform> neighbors = GetNearbyObjects(flockAgents[i]);
             Vector3 alignmentDirection = CalculateAlignment(flockAgents[i], neighbors);
             Vector3 cohesionDirection = CalculateCohesion(flockAgents[i], neighbors);
+            Vector3 avoidanceDirection = CalculateAvoidance(flockAgents[i], neighbors);
 
-            Vector3 moveDirection = alignmentDirection + cohesionDirection;
+            Vector3 moveDirection = alignmentDirection + cohesionDirection + avoidanceDirection;
 
             flockAgents[i].MoveAgent(moveDirection);
 
@@ -89,11 +93,17 @@ public class Flock : MonoBehaviour
         // Calculate avoidance 
         Vector3 direction = new Vector3();
         int numToAvoid = 0;
-        float squareAvoidanceRadius = 2f * 2f;
+        float squareAvoidanceRadius = avoidanceRadius * avoidanceRadius;
 
         for(int i = 0; i < neighbors.Count; i++)
         {
+            bool isNeighborInsideAvoidanceRadius = Vector2.SqrMagnitude(neighbors[i].position - agent.transform.position) < squareAvoidanceRadius;
 
+            if (isNeighborInsideAvoidanceRadius)
+            {
+                direction = direction + (agent.transform.position - neighbors[i].position);
+                numToAvoid++;
+            }
         }
 
         return direction;
@@ -123,7 +133,7 @@ public class Flock : MonoBehaviour
     {
         List<Transform> neighbors = new List<Transform>();
 
-        Collider2D[] neighborColliders = Physics2D.OverlapCircleAll(agent.transform.position, 2f);
+        Collider2D[] neighborColliders = Physics2D.OverlapCircleAll(agent.transform.position, neighborRadius);
         Collider2D agentCollider = agent.gameObject.GetComponent<Collider2D>();
 
         for (int i = 0; i < neighborColliders.Length; i++)

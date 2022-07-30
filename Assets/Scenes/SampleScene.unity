@@ -250,6 +250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flockAgentPrefab: {fileID: 7292867299429839606, guid: 03ece25c0526961418e626136ecf8f2a, type: 3}
-  flockAgentCount: 50
+  flockAgentCount: 100
   spawnRadius: 10
   flockAgents: []
+  avoidanceRadius: 0.6
