@@ -10,6 +10,12 @@ public class Flock : MonoBehaviour
     public float avoidanceRadius = 1f;
     public float neighborRadius = 2f;
 
+    public float alignmentWeight = 1f;
+    public float cohesionWeight = 1f;
+    public float avoidanceWeight = 1f;
+
+    public float centerRadius = 5f;
+
     public List<FlockAgent> flockAgents;
 
     // Start is called before the first frame update
@@ -27,8 +33,27 @@ public class Flock : MonoBehaviour
             Vector3 alignmentDirection = CalculateAlignment(flockAgents[i], neighbors);
             Vector3 cohesionDirection = CalculateCohesion(flockAgents[i], neighbors);
             Vector3 avoidanceDirection = CalculateAvoidance(flockAgents[i], neighbors);
+            Vector3 stayInRadiusDirection = StayInRadius(flockAgents[i]);
 
-            Vector3 moveDirection = alignmentDirection + cohesionDirection + avoidanceDirection;
+            // If alignment direction's magnitude exceeds the alignmentWeight value
+            // Then normalize the alignment direction (i.e. turn it into a vector with length 1)
+            if (alignmentDirection.sqrMagnitude > alignmentWeight * alignmentWeight)
+            {
+                alignmentDirection.Normalize();
+            }
+
+            // Do the same thing for cohesion and avoidance
+            if (cohesionDirection.sqrMagnitude > cohesionWeight * cohesionWeight)
+            {
+                cohesionDirection.Normalize();
+            }
+
+            if (avoidanceDirection.sqrMagnitude > avoidanceWeight * avoidanceWeight)
+            {
+                avoidanceDirection.Normalize();
+            }
+
+            Vector3 moveDirection = (alignmentDirection * alignmentWeight) + (cohesionDirection * cohesionWeight) + (avoidanceDirection * avoidanceWeight) + stayInRadiusDirection;
 
             flockAgents[i].MoveAgent(moveDirection);
 
@@ -109,6 +134,20 @@ public class Flock : MonoBehaviour
         return direction;
     }
 
+    Vector3 StayInRadius(FlockAgent agent)
+    {
+        Vector3 center = Vector3.zero;
+        Vector3 centerOffset = center - agent.transform.position;
+        float percentageAwayFromCenter = centerOffset.magnitude / centerRadius;
+
+        bool isAgentWithinRadius = percentageAwayFromCenter < 0.9f;
+        if (isAgentWithinRadius)
+        {
+            return Vector3.zero;
+        }
+
+        return centerOffset * percentageAwayFromCenter * percentageAwayFromCenter;
+    }
 
 
     void Initialize()

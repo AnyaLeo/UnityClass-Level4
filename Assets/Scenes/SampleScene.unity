@@ -252,5 +252,10 @@ MonoBehaviour:
   flockAgentPrefab: {fileID: 7292867299429839606, guid: 03ece25c0526961418e626136ecf8f2a, type: 3}
   flockAgentCount: 100
   spawnRadius: 10
+  avoidanceRadius: 0.9
+  neighborRadius: 2
+  alignmentWeight: 5
+  cohesionWeight: 1
+  avoidanceWeight: 5
+  centerRadius: 1
   flockAgents: []
-  avoidanceRadius: 0.6
