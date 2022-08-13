@@ -13,6 +13,7 @@ public class Flock : MonoBehaviour
     public float alignmentWeight = 1f;
     public float cohesionWeight = 1f;
     public float avoidanceWeight = 1f;
+    public float stayInRadiusWeight = 1f;
 
     public float centerRadius = 5f;
 
@@ -53,9 +54,15 @@ public class Flock : MonoBehaviour
                 avoidanceDirection.Normalize();
             }
 
-            Vector3 moveDirection = (alignmentDirection * alignmentWeight) + (cohesionDirection * cohesionWeight) + (avoidanceDirection * avoidanceWeight) + stayInRadiusDirection;
+            if (stayInRadiusDirection.sqrMagnitude > stayInRadiusWeight * stayInRadiusWeight)
+            {
+                stayInRadiusDirection.Normalize();
+            }
+
+            Vector3 moveDirection = (cohesionDirection * cohesionWeight) + (alignmentDirection * alignmentWeight) + (avoidanceDirection * avoidanceWeight) + (stayInRadiusDirection * stayInRadiusWeight);
 
             flockAgents[i].MoveAgent(moveDirection);
+
 
             // DEMO ONLY
             // Test code

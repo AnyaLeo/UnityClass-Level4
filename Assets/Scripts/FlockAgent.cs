@@ -10,6 +10,6 @@ public class FlockAgent : MonoBehaviour
         transform.up = moveDirection;
 
         // Move us in moveDirection (because that's what out transform.up is pointing to)
-        transform.position += transform.up * Time.deltaTime;
+        transform.position += moveDirection * Time.deltaTime;
     }
 }
