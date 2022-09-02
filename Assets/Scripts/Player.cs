@@ -36,4 +36,13 @@ public class Player : MonoBehaviour
 
         transform.Translate(movement * Time.deltaTime * speed);
     }
+
+    private void OnCollisionEnter2D(Collision2D other) 
+    {
+        bool didCollideWithFish = other.gameObject.CompareTag("Fish");
+        if (didCollideWithFish) 
+        {
+            Destroy(other.gameObject);
+        }
+    }
 }
