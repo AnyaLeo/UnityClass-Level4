@@ -28,8 +28,15 @@ public class Flock : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        int missingFlockAgentCounter = 0;
         for (int i = 0; i < flockAgents.Count; i++)
         {
+            if (flockAgents[i] == null)
+            {
+                flockAgents.RemoveAt(i);
+                missingFlockAgentCounter++;
+                continue;
+            }
             List<Transform> neighbors = GetNearbyObjects(flockAgents[i]);
             Vector3 alignmentDirection = CalculateAlignment(flockAgents[i], neighbors);
             Vector3 cohesionDirection = CalculateCohesion(flockAgents[i], neighbors);
@@ -69,6 +76,12 @@ public class Flock : MonoBehaviour
             // The greener the agent, the more neighbors they've got
             // This line of code is very slow for performance
             // flockAgents[i].GetComponent<SpriteRenderer>().color = Color.Lerp(Color.white, Color.green, neighbors.Count / 6f);
+        }
+
+        // Replace all the missing fish with new fish
+        for (int i = 0; i < missingFlockAgentCounter; i++)
+        {
+            InitializeFlockAgent();
         }
     }
 
@@ -161,18 +174,23 @@ public class Flock : MonoBehaviour
     {
         for(int i = 0; i < flockAgentCount; i++)
         {
-            GameObject newAgent = Instantiate(flockAgentPrefab);
-            Vector2 newAgentPosition = Random.insideUnitCircle * spawnRadius;
-            newAgent.transform.position = newAgentPosition;
-
-            Vector3 newAgentRotation = new Vector3(0, 0, Random.Range(0f, 360f)); 
-            newAgent.transform.eulerAngles = newAgentRotation;
-
-            newAgent.transform.parent = transform;
-
-            FlockAgent newFlockAgent = newAgent.GetComponent<FlockAgent>();
-            flockAgents.Add(newFlockAgent);
+            InitializeFlockAgent();
         }
+    }
+
+    void InitializeFlockAgent()
+    {
+        GameObject newAgent = Instantiate(flockAgentPrefab);
+        Vector2 newAgentPosition = Random.insideUnitCircle * spawnRadius;
+        newAgent.transform.position = newAgentPosition;
+
+        Vector3 newAgentRotation = new Vector3(0, 0, Random.Range(0f, 360f));
+        newAgent.transform.eulerAngles = newAgentRotation;
+
+        newAgent.transform.parent = transform;
+
+        FlockAgent newFlockAgent = newAgent.GetComponent<FlockAgent>();
+        flockAgents.Add(newFlockAgent);
     }
 
     List<Transform> GetNearbyObjects(FlockAgent agent)
