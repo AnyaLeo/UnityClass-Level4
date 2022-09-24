@@ -1,15 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
     public float speed = 5f;
 
+    private int fishCounter;
+    public TextMeshProUGUI fishCounterText;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        fishCounter = 0;
     }
 
     // Update is called once per frame
@@ -43,6 +47,18 @@ public class Player : MonoBehaviour
         if (didCollideWithFish) 
         {
             Destroy(other.gameObject);
+
+            fishCounter = fishCounter + 1;
         }
+
+        bool didCollideWithPoisonFish = other.gameObject.CompareTag("Poison");
+        if (didCollideWithPoisonFish)
+        {
+            Destroy(other.gameObject);
+
+            fishCounter = fishCounter - 100;
+        }
+
+        fishCounterText.text = "Fish eaten: " + fishCounter.ToString();
     }
 }
