@@ -567,12 +567,32 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3149661261473661346, guid: 08e6feb1eb668254dbad0f44fd0c16dd, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3149661261473661348, guid: 08e6feb1eb668254dbad0f44fd0c16dd, type: 3}
+      propertyPath: scaleDecrease
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3149661261473661348, guid: 08e6feb1eb668254dbad0f44fd0c16dd, type: 3}
       propertyPath: fishCounterText
       value: 
       objectReference: {fileID: 47361228}
     - target: {fileID: 3149661261473661351, guid: 08e6feb1eb668254dbad0f44fd0c16dd, type: 3}
       propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3149661261473661351, guid: 08e6feb1eb668254dbad0f44fd0c16dd, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3149661261473661351, guid: 08e6feb1eb668254dbad0f44fd0c16dd, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3149661261473661351, guid: 08e6feb1eb668254dbad0f44fd0c16dd, type: 3}
+      propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3149661261473661351, guid: 08e6feb1eb668254dbad0f44fd0c16dd, type: 3}

@@ -10,6 +10,10 @@ public class Player : MonoBehaviour
     private int fishCounter;
     public TextMeshProUGUI fishCounterText;
 
+    public bool scalingEnabled = true;
+    public float scaleIncrease = 0.01f;
+    public float scaleDecrease = 10f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,14 +45,22 @@ public class Player : MonoBehaviour
         transform.Translate(movement * Time.deltaTime * speed);
     }
 
-    private void OnCollisionEnter2D(Collision2D other) 
+    private void OnTriggerEnter2D(Collider2D other)
     {
         bool didCollideWithFish = other.gameObject.CompareTag("Fish");
-        if (didCollideWithFish) 
+        if (didCollideWithFish)
         {
             Destroy(other.gameObject);
 
             fishCounter = fishCounter + 1;
+
+            if (scalingEnabled)
+            {
+                Vector3 scale = transform.localScale;
+                scale.x += scaleIncrease;
+                scale.y += scaleIncrease;
+                transform.localScale = scale;
+            }
         }
 
         bool didCollideWithPoisonFish = other.gameObject.CompareTag("Poison");
@@ -57,8 +69,28 @@ public class Player : MonoBehaviour
             Destroy(other.gameObject);
 
             fishCounter = fishCounter - 100;
+
+            if (scalingEnabled)
+            {
+                Vector3 scale = transform.localScale;
+                scale.x -= scaleDecrease;
+                scale.y -= scaleDecrease;
+
+                if (scale.x <= 1f)
+                {
+                    scale.x = 1f;
+                    scale.y = 1f;
+                }
+
+                transform.localScale = scale;
+            }
         }
 
         fishCounterText.text = "Fish eaten: " + fishCounter.ToString();
+    }
+
+    private void OnCollisionEnter2D(Collision2D other) 
+    {
+        
     }
 }
