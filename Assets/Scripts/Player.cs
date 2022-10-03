@@ -61,6 +61,8 @@ public class Player : MonoBehaviour
                 scale.y += scaleIncrease;
                 transform.localScale = scale;
             }
+
+            GameManager.Instance.fishEatSound.Play();
         }
 
         bool didCollideWithPoisonFish = other.gameObject.CompareTag("Poison");
@@ -84,6 +86,7 @@ public class Player : MonoBehaviour
 
                 transform.localScale = scale;
             }
+            GameManager.Instance.poisonFishSound.Play();
         }
 
         fishCounterText.text = "Fish eaten: " + fishCounter.ToString();
